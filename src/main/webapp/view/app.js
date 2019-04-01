@@ -2,11 +2,12 @@ var app = angular.module('app', []);
 
 app.controller('ContactCtrl', ['$scope', 'ContactsService', function ($scope, ContactsService) {
 
-    $scope.ph_numbr = /^\+?\d{10}$/;
+    $scope.modalShown = false;
+    $scope.toggleModal = function() {
+        $scope.modalShown = !$scope.modalShown;
+    };
 
-    $scope.firstNameMessage = "<span class=\"red-text\" ng-if=\"checkEmpty(contact.firstName)\">First Name is required</span>";
-    $scope.lastNameMessage = "<span class=\"red-text\" ng-if=\"checkEmpty(contact.lastName)\">Last Name is required</span>";
-    $scope.phoneMessage = "<span class=\"red-text\" ng-if=\"checkEmpty(contact.phone)\">Phone number is required</span>";
+    $scope.ph_numbr = /^\+?\d{10}$/;
 
     $scope.checkPhone = function (phone) {
         return $scope.checkEmpty(phone) || $scope.ph_numbr.test(phone);
@@ -37,9 +38,6 @@ app.controller('ContactCtrl', ['$scope', 'ContactsService', function ($scope, Co
                 function success(response) {
                     $scope.message = 'Contact Added';
                     $scope.errorMessage = '';
-                    $scope.contact.firstName = '';
-                    $scope.contact.lastName = '';
-                    $scope.contact.phone = '';
                     $scope.initAllContacts();
                 },
                 function error(response) {
@@ -109,6 +107,31 @@ app.service('ContactsService', ['$http', function ($http) {
             url: 'api/contact_book/contacts'
         });
     }
-
-
 }]);
+
+app.directive('modalDialog', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            show: '='
+        },
+        replace: true,
+        transclude: true,
+        link: function(scope, element, attrs) {
+            scope.dialogStyle = {};
+
+            if (attrs.width) {
+                scope.dialogStyle.width = attrs.width;
+            }
+
+            if (attrs.height) {
+                scope.dialogStyle.height = attrs.height;
+            }
+
+            scope.hideModal = function() {
+                scope.show = false;
+            };
+        },
+        template: '...' // Смотрите ниже
+    };
+});
