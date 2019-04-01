@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="view/app.js"></script>
+</head>
+<body>
+<div class="container">
+    <div ng-app="app" ng-controller="ContactCtrl">
+        <br/>
+        <h2>Your contacts book</h2>
+        <br/>
+        <table class="table">
+            <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Phone Number</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tbody ng-repeat="contact in Contacts | orderBy: '+id'">
+            <tr style="height: 90px">
+                <td>
+                    <input class="form-control" type="text" ng-model="contact.firstName"/>
+                    <span class="red-text" ng-show="checkEmpty(contact.firstName)">First Name is required</span>
+                </td>
+                <td>
+                    <input class="form-control" type="text" ng-model="contact.lastName"/>
+                    <span class="red-text" ng-show="checkEmpty(contact.lastName)">Last Name is required</span>
+                </td>
+                <td>
+                    <input class="form-control" type="tel" ng-model="contact.phone"/>
+                    <span class="red-text" ng-show="checkEmpty(contact.phone)">Phone number is required</span>
+                    <span class="red-text" ng-show="!checkPhone(contact.phone)">Please enter a 10 digit number</span>
+                </td>
+                <td>
+                    <input class="btn btn-primary mb-2" type="button"
+                           ng-disabled="checkContact(contact)"
+                           ng-click="updateContact(contact.id, contact.firstName, contact.lastName, contact.phone)" value="Edit">
+                </td>
+                <td><input class="btn btn-primary mb-2" type="button" ng-click="deleteContact(contact.id)" value="Remove"></td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>
+                    <input placeholder="First Name" name="firstName" class="form-control" type="text"
+                           ng-model="contact.firstName" ng-init="contact.firstName = ''"/>
+                    <span class="red-text" ng-if="checkEmpty(contact.firstName)">First Name is required</span>
+                </td>
+                <td>
+                    <input placeholder="Last Name" name="lastName" class="form-control" type="text"
+                           ng-model="contact.lastName" ng-init="contact.lastName = ''"/>
+                    <span class="red-text" ng-if="checkEmpty(contact.lastName)">Last Name is required</span>
+                </td>
+                <td>
+                    <input placeholder="10 digit numbers" name="phone" class="form-control" type="text"
+                           ng-model="contact.phone" ng-init="contact.phone = ''"/>
+                    <span class="red-text" ng-if="checkEmpty(contact.phone)">Phone number is required</span>
+                    <span class="red-text" ng-show="!checkPhone(contact.phone)">Please enter a 10 digit number</span>
+                </td>
+                <td>
+                    <input class="btn btn-primary mb-2" ng-disabled="checkContact(contact)" type="button"
+                           ng-click="addContact()" value="Add"/>
+                </td>
+                <td></td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+</body>
+</html>
