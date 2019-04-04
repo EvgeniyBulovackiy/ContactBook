@@ -1,0 +1,25 @@
+<h1 mat-dialog-title style="width: auto; text-align: center">Updating contact</h1>
+<div mat-dialog-content style="width: auto; height: 250px">
+    <form [formGroup]="contactForm" novalidate autocomplete="off">
+        <mat-form-field style="width: 350px">
+            <input matInput type="text" placeholder="First Name" [(ngModel)]="data.firstName" formControlName="firstName"
+                   id="firstName">
+            <mat-error ng-if="checkError('name', 'required')">First Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 350px">
+            <input matInput type="text" placeholder="Last Name" [(ngModel)]="data.lastName" formControlName="lastName"
+                   id="lastName">
+            <mat-error ng-if="checkError('name', 'required')">Last Name is required</mat-error>
+        </mat-form-field>
+        <mat-form-field style="width: 350px">
+            <input matInput type="text" placeholder="Phone" [(ngModel)]="data.phone" formControlName="phone" id="phone">
+            <mat-hint align="end">Should be 10 digit numbers</mat-hint>
+            <mat-error ng-if="checkError('name', 'required') ">Phone is required</mat-error>
+            <mat-error ng-if="checkError('name', 'pattern')">Phone should contains 10 digit numbers</mat-error>
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions style="width: 350px">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button mat-dialog-close (click)="updateCont(data)" [disabled]="!contactForm.valid" cdkFocusInitial>Ok</button>
+</div>
